@@ -1,0 +1,325 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CSS 布局笔记：从盒模型到 Flex 与 Grid | 张三的主页</title><meta name="author" content="张三"><meta name="copyright" content="张三"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="写静态页面的第一天就会遇到一个问题：为什么元素的位置和我想的不一样？答案通常藏在盒模型和文档流里。这篇笔记把 CSS 布局的主线梳理一遍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS 布局笔记：从盒模型到 Flex 与 Grid">
+<meta property="og:url" content="https://weshare-sun.github.io/css-layout/index.html">
+<meta property="og:site_name" content="张三的主页">
+<meta property="og:description" content="写静态页面的第一天就会遇到一个问题：为什么元素的位置和我想的不一样？答案通常藏在盒模型和文档流里。这篇笔记把 CSS 布局的主线梳理一遍。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://weshare-sun.github.io/img/cover-3.svg">
+<meta property="article:published_time" content="2026-09-28T13:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-08T08:32:13.792Z">
+<meta property="article:author" content="张三">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="布局">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://weshare-sun.github.io/img/cover-3.svg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "CSS 布局笔记：从盒模型到 Flex 与 Grid",
+  "url": "https://weshare-sun.github.io/css-layout/",
+  "image": "https://weshare-sun.github.io/img/cover-3.svg",
+  "datePublished": "2026-09-28T13:00:00.000Z",
+  "dateModified": "2026-10-08T08:32:13.792Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "张三",
+      "url": "https://weshare-sun.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/avatar.svg"><link rel="canonical" href="https://weshare-sun.github.io/css-layout/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CSS 布局笔记：从盒模型到 Flex 与 Grid',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/cover-3.svg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.svg" alt="Logo"><span class="site-name">张三的主页</span></a><a class="nav-page-title" href="/"><span class="site-name">CSS 布局笔记：从盒模型到 Flex 与 Grid</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CSS 布局笔记：从盒模型到 Flex 与 Grid</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-28T13:00:00.000Z" title="发表于 2026-09-28 21:00:00">2026-09-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-08T08:32:13.792Z" title="更新于 2026-10-08 16:32:13">2026-10-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>写静态页面的第一天就会遇到一个问题：<strong>为什么元素的位置和我想的不一样？</strong><br>答案通常藏在盒模型和文档流里。这篇笔记把 CSS 布局的主线梳理一遍。</p>
+<span id="more"></span>
+
+<h2 id="一、盒模型：所有布局的基础"><a href="#一、盒模型：所有布局的基础" class="headerlink" title="一、盒模型：所有布局的基础"></a>一、盒模型：所有布局的基础</h2><p>CSS 把每个元素都看成一个矩形的盒子，从内到外分四层：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">┌─────────────────────────────┐</span><br><span class="line">│          margin             │</span><br><span class="line">│  ┌───────────────────────┐  │</span><br><span class="line">│  │       border          │  │</span><br><span class="line">│  │  ┌─────────────────┐  │  │</span><br><span class="line">│  │  │    padding      │  │  │</span><br><span class="line">│  │  │  ┌───────────┐  │  │  │</span><br><span class="line">│  │  │  │  content  │  │  │  │</span><br><span class="line">│  │  │  └───────────┘  │  │  │</span><br><span class="line">│  │  └─────────────────┘  │  │</span><br><span class="line">│  └───────────────────────┘  │</span><br><span class="line">└─────────────────────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>关键在于 <code>box-sizing</code>：</p>
+<table>
+<thead>
+<tr>
+<th align="left">取值</th>
+<th align="left"><code>width</code> 的含义</th>
+<th align="left">直觉上</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>content-box</code>（默认）</td>
+<td align="left">只算 content</td>
+<td align="left">加了 padding 盒子会变大，容易撑破布局</td>
+</tr>
+<tr>
+<td align="left"><code>border-box</code></td>
+<td align="left">content + padding + border</td>
+<td align="left">所见即所得，推荐</td>
+</tr>
+</tbody></table>
+<p>所以几乎所有项目的第一行 CSS 都是：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">*, *<span class="selector-pseudo">::before</span>, *<span class="selector-pseudo">::after</span> &#123;</span><br><span class="line">  <span class="attribute">box-sizing</span>: border-box;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="二、文档流、块级与行内"><a href="#二、文档流、块级与行内" class="headerlink" title="二、文档流、块级与行内"></a>二、文档流、块级与行内</h2><ul>
+<li><strong>块级元素</strong>（<code>div</code>、<code>p</code>、<code>h1</code>）：独占一行，宽度默认撑满父元素</li>
+<li><strong>行内元素</strong>（<code>span</code>、<code>a</code>、<code>strong</code>）：同一行排列，宽高由内容决定</li>
+<li><strong>行内块</strong>（<code>inline-block</code>）：同一行排列，但可以设置宽高</li>
+</ul>
+<p>脱离文档流的方式有 <code>float</code> 和 <code>position: absolute/fixed</code> ——<br>它们会让元素不再占据原来的位置，这也是当年 <code>float</code> 布局需要 <code>clearfix</code> 的原因。</p>
+<h2 id="三、Flex：一维布局"><a href="#三、Flex：一维布局" class="headerlink" title="三、Flex：一维布局"></a>三、Flex：一维布局</h2><p>Flex 解决的是<strong>一行或一列内部如何分配空间</strong>的问题。<br>给父元素加一句 <code>display: flex</code>，子元素立刻变成可伸缩的”项目”。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: space-between;  <span class="comment">/* 主轴对齐 */</span></span><br><span class="line">  <span class="attribute">align-items</span>: center;             <span class="comment">/* 交叉轴对齐 */</span></span><br><span class="line">  <span class="attribute">gap</span>: <span class="number">16px</span>;                       <span class="comment">/* 间距，比 margin 更省心 */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>几个最常用的属性：</p>
+<table>
+<thead>
+<tr>
+<th align="left">属性</th>
+<th align="left">作用于</th>
+<th align="left">常见取值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>flex-direction</code></td>
+<td align="left">主轴方向</td>
+<td align="left"><code>row</code> &#x2F; <code>column</code></td>
+</tr>
+<tr>
+<td align="left"><code>justify-content</code></td>
+<td align="left">主轴对齐</td>
+<td align="left"><code>flex-start</code> &#x2F; <code>center</code> &#x2F; <code>space-between</code></td>
+</tr>
+<tr>
+<td align="left"><code>align-items</code></td>
+<td align="left">交叉轴对齐</td>
+<td align="left"><code>stretch</code> &#x2F; <code>center</code> &#x2F; <code>flex-start</code></td>
+</tr>
+<tr>
+<td align="left"><code>flex</code></td>
+<td align="left">子项伸缩比例</td>
+<td align="left"><code>1</code> &#x2F; <code>0 0 auto</code></td>
+</tr>
+<tr>
+<td align="left"><code>gap</code></td>
+<td align="left">项目间距</td>
+<td align="left">任意长度</td>
+</tr>
+</tbody></table>
+<p><strong>居中的一个经典答案</strong>，三行就够了：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.parent</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: center;</span><br><span class="line">  <span class="attribute">align-items</span>: center;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="四、Grid：二维布局"><a href="#四、Grid：二维布局" class="headerlink" title="四、Grid：二维布局"></a>四、Grid：二维布局</h2><p>Flex 一次只能管一个方向，Grid 可以同时管行和列。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.grid</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="built_in">repeat</span>(auto-fit, <span class="built_in">minmax</span>(<span class="number">240px</span>, <span class="number">1</span>fr));</span><br><span class="line">  <span class="attribute">gap</span>: <span class="number">20px</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这四行实现了一个<strong>响应式卡片网格</strong> —— 屏幕宽就多排几列，屏幕窄就自动换行，<br>完全不需要写媒体查询。这在以前要靠浮动 + 百分比 + <code>@media</code> 才能凑出来。</p>
+<h2 id="五、选择器与优先级"><a href="#五、选择器与优先级" class="headerlink" title="五、选择器与优先级"></a>五、选择器与优先级</h2><table>
+<thead>
+<tr>
+<th align="left">选择器</th>
+<th align="left">写法</th>
+<th align="center">权重</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">标签</td>
+<td align="left"><code>p</code></td>
+<td align="center">1</td>
+</tr>
+<tr>
+<td align="left">类</td>
+<td align="left"><code>.card</code></td>
+<td align="center">10</td>
+</tr>
+<tr>
+<td align="left">ID</td>
+<td align="left"><code>#header</code></td>
+<td align="center">100</td>
+</tr>
+<tr>
+<td align="left">内联</td>
+<td align="left"><code>style=&quot;...&quot;</code></td>
+<td align="center">1000</td>
+</tr>
+</tbody></table>
+<p>优先级高的胜出；同权重时后写的胜出。<code>!important</code> 能强行覆盖，但<strong>能不用就不用</strong> ——<br>它会让后面的样式无从下手，是样式表失控的常见起点。</p>
+<h2 id="六、小结"><a href="#六、小结" class="headerlink" title="六、小结"></a>六、小结</h2><p>一个实用的决策顺序：</p>
+<ol>
+<li>需要<strong>一行&#x2F;一列内部分配空间</strong> → Flex</li>
+<li>需要<strong>同时控制行和列</strong> → Grid</li>
+<li>只是<strong>简单文字排版</strong> → 直接用文档流，别上布局</li>
+</ol>
+<p>布局工具是为解决问题存在的，不是越新越好。能用文档流解决的，就别加 <code>display: flex</code>。</p>
+<hr>
+<p><em>本文是「计算机网络实验一：静态网页制作」的一部分，用于学习 HTML &#x2F; CSS 基础知识。</em></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://weshare-sun.github.io">张三</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://weshare-sun.github.io/css-layout/">https://weshare-sun.github.io/css-layout/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://weshare-sun.github.io" target="_blank">张三的主页</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/CSS/">CSS</a><a class="post-meta__tags" href="/tags/HTML/">HTML</a><a class="post-meta__tags" href="/tags/%E5%B8%83%E5%B1%80/">布局</a></div><div class="post-share"><div class="social-share" data-image="/img/cover-3.svg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/http-versions/" title="HTTP 协议版本演进：从 1.0 到 HTTP/3"><img class="cover" src="/img/cover-2.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">HTTP 协议版本演进：从 1.0 到 HTTP/3</div></div><div class="info-2"><div class="info-item-1">打开一个网页，浏览器和服务器之间到底聊了些什么？这篇文章梳理 HTTP 协议从 1.0 到 HTTP&#x2F;3的演进脉络 —— 每一代版本都在解决上一代暴露出来的同一个问题：等待。   一张表看懂四代版本   版本 传输层 连接方式 核心改进 遗留问题    HTTP&#x2F;1.0 TCP 短连接 引入状态码、请求方法、头部字段 每次请求都要重新握手，效率低   HTTP&#x2F;1.1 TCP 持久连接 Host 头、增强缓存、分块传输、范围请求 应用层队头阻塞   HTTP&#x2F;2 TCP 单连接多路复用 二进制分帧、头部压缩、服务器推送 传输层队头阻塞   HTTP&#x2F;3 QUIC（UDP） 流独立传输 0-RTT 握手、连接迁移、默认加密 生态仍在完善   HTTP&#x2F;1.0 —— 奠基的一代HTTP&#x2F;1.0 确立了今天我们熟悉的基本概念：  状态码：200 表示成功，404 表示资源不存在，500 表示服务端出错 请求方法：GET 取资源，POST 提交数据 头部字段：Content-Type 告诉对方我发的是什么格式  它最大...</div></div></div></a><a class="pagination-related" href="/toolbox/" title="我的工具箱：常用开发环境与配置"><img class="cover" src="/img/cover-4.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">我的工具箱：常用开发环境与配置</div></div><div class="info-2"><div class="info-item-1">工具顺手，写代码的时间才真正花在写代码上。这篇记录我平时最常用的一套环境和几个高频命令。   编辑器：VS Code常驻的扩展：    扩展 用途    Chinese (Simplified) 中文界面   Prettier 保存时自动格式化   ESLint JavaScript 代码检查   Live Server 本地起一个热重载的静态服务器   Markdown All in One 写笔记和博客时的快捷键   GitLens 在代码行内看到是谁、什么时候改的   一个我很依赖的设置 —— 保存即格式化： 12345&#123;  &quot;editor.formatOnSave&quot;: true,  &quot;editor.tabSize&quot;: 2,  &quot;files.autoSave&quot;: &quot;onFocusChange&quot;&#125;  版本控制：Git日常真正高频的其实只有这几条： 12345git status                  # 我现在改了哪些文件git add .             ...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">张三</div><div class="author-info-description">中国科学技术大学本科生个人主页 —— 关于我、项目、学习笔记与生活分享</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/weshare-sun" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zhangsan@mail.ustc.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://www.ustc.edu.cn/" target="_blank" title="USTC"><i class="fas fa-graduation-cap" style="color: #1e6fba;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的个人主页～ 这里是「计算机网络实验一：静态网页制作」的成果，欢迎<a href="/about/">了解一下我</a>。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E7%9B%92%E6%A8%A1%E5%9E%8B%EF%BC%9A%E6%89%80%E6%9C%89%E5%B8%83%E5%B1%80%E7%9A%84%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">一、盒模型：所有布局的基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81%E6%96%87%E6%A1%A3%E6%B5%81%E3%80%81%E5%9D%97%E7%BA%A7%E4%B8%8E%E8%A1%8C%E5%86%85"><span class="toc-number">2.</span> <span class="toc-text">二、文档流、块级与行内</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81Flex%EF%BC%9A%E4%B8%80%E7%BB%B4%E5%B8%83%E5%B1%80"><span class="toc-number">3.</span> <span class="toc-text">三、Flex：一维布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%9B%E3%80%81Grid%EF%BC%9A%E4%BA%8C%E7%BB%B4%E5%B8%83%E5%B1%80"><span class="toc-number">4.</span> <span class="toc-text">四、Grid：二维布局</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%94%E3%80%81%E9%80%89%E6%8B%A9%E5%99%A8%E4%B8%8E%E4%BC%98%E5%85%88%E7%BA%A7"><span class="toc-number">5.</span> <span class="toc-text">五、选择器与优先级</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%AD%E3%80%81%E5%B0%8F%E7%BB%93"><span class="toc-number">6.</span> <span class="toc-text">六、小结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/hello-world/" title="Hello World：这个主页是怎么搭起来的"><img src="/img/cover-1.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World：这个主页是怎么搭起来的"/></a><div class="content"><a class="title" href="/hello-world/" title="Hello World：这个主页是怎么搭起来的">Hello World：这个主页是怎么搭起来的</a><time datetime="2026-10-05T12:30:00.000Z" title="发表于 2026-10-05 20:30:00">2026-10-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/http-versions/" title="HTTP 协议版本演进：从 1.0 到 HTTP/3"><img src="/img/cover-2.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="HTTP 协议版本演进：从 1.0 到 HTTP/3"/></a><div class="content"><a class="title" href="/http-versions/" title="HTTP 协议版本演进：从 1.0 到 HTTP/3">HTTP 协议版本演进：从 1.0 到 HTTP/3</a><time datetime="2026-10-03T07:00:00.000Z" title="发表于 2026-10-03 15:00:00">2026-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/css-layout/" title="CSS 布局笔记：从盒模型到 Flex 与 Grid"><img src="/img/cover-3.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CSS 布局笔记：从盒模型到 Flex 与 Grid"/></a><div class="content"><a class="title" href="/css-layout/" title="CSS 布局笔记：从盒模型到 Flex 与 Grid">CSS 布局笔记：从盒模型到 Flex 与 Grid</a><time datetime="2026-09-28T13:00:00.000Z" title="发表于 2026-09-28 21:00:00">2026-09-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/toolbox/" title="我的工具箱：常用开发环境与配置"><img src="/img/cover-4.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="我的工具箱：常用开发环境与配置"/></a><div class="content"><a class="title" href="/toolbox/" title="我的工具箱：常用开发环境与配置">我的工具箱：常用开发环境与配置</a><time datetime="2026-09-20T06:00:00.000Z" title="发表于 2026-09-20 14:00:00">2026-09-20</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 张三</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo · Theme by Butterfly | 计算机网络实验一</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

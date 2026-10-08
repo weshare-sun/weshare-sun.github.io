@@ -1,0 +1,310 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>HTTP 协议版本演进：从 1.0 到 HTTP/3 | 张三的主页</title><meta name="author" content="张三"><meta name="copyright" content="张三"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="打开一个网页，浏览器和服务器之间到底聊了些什么？这篇文章梳理 HTTP 协议从 1.0 到 HTTP&#x2F;3的演进脉络 —— 每一代版本都在解决上一代暴露出来的同一个问题：等待。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP 协议版本演进：从 1.0 到 HTTP&#x2F;3">
+<meta property="og:url" content="https://weshare-sun.github.io/http-versions/index.html">
+<meta property="og:site_name" content="张三的主页">
+<meta property="og:description" content="打开一个网页，浏览器和服务器之间到底聊了些什么？这篇文章梳理 HTTP 协议从 1.0 到 HTTP&#x2F;3的演进脉络 —— 每一代版本都在解决上一代暴露出来的同一个问题：等待。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://weshare-sun.github.io/img/cover-2.svg">
+<meta property="article:published_time" content="2026-10-03T07:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-08T08:32:06.354Z">
+<meta property="article:author" content="张三">
+<meta property="article:tag" content="HTTP">
+<meta property="article:tag" content="性能优化">
+<meta property="article:tag" content="网络协议">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://weshare-sun.github.io/img/cover-2.svg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "HTTP 协议版本演进：从 1.0 到 HTTP/3",
+  "url": "https://weshare-sun.github.io/http-versions/",
+  "image": "https://weshare-sun.github.io/img/cover-2.svg",
+  "datePublished": "2026-10-03T07:00:00.000Z",
+  "dateModified": "2026-10-08T08:32:06.354Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "张三",
+      "url": "https://weshare-sun.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/avatar.svg"><link rel="canonical" href="https://weshare-sun.github.io/http-versions/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.7.0"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.3.1/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'HTTP 协议版本演进：从 1.0 到 HTTP/3',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header" style="background-image: url(/img/cover-2.svg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="/img/avatar.svg" alt="Logo"><span class="site-name">张三的主页</span></a><a class="nav-page-title" href="/"><span class="site-name">HTTP 协议版本演进：从 1.0 到 HTTP/3</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-user"></i><span> 关于我</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">HTTP 协议版本演进：从 1.0 到 HTTP/3</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-03T07:00:00.000Z" title="发表于 2026-10-03 15:00:00">2026-10-03</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-08T08:32:06.354Z" title="更新于 2026-10-08 16:32:06">2026-10-08</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>打开一个网页，浏览器和服务器之间到底聊了些什么？这篇文章梳理 HTTP 协议从 1.0 到 HTTP&#x2F;3<br>的演进脉络 —— 每一代版本都在解决上一代暴露出来的同一个问题：<strong>等待</strong>。</p>
+<span id="more"></span>
+
+<h2 id="一张表看懂四代版本"><a href="#一张表看懂四代版本" class="headerlink" title="一张表看懂四代版本"></a>一张表看懂四代版本</h2><table>
+<thead>
+<tr>
+<th align="left">版本</th>
+<th align="left">传输层</th>
+<th align="left">连接方式</th>
+<th align="left">核心改进</th>
+<th align="left">遗留问题</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">HTTP&#x2F;1.0</td>
+<td align="left">TCP</td>
+<td align="left">短连接</td>
+<td align="left">引入状态码、请求方法、头部字段</td>
+<td align="left">每次请求都要重新握手，效率低</td>
+</tr>
+<tr>
+<td align="left">HTTP&#x2F;1.1</td>
+<td align="left">TCP</td>
+<td align="left">持久连接</td>
+<td align="left">Host 头、增强缓存、分块传输、范围请求</td>
+<td align="left">应用层队头阻塞</td>
+</tr>
+<tr>
+<td align="left">HTTP&#x2F;2</td>
+<td align="left">TCP</td>
+<td align="left">单连接多路复用</td>
+<td align="left">二进制分帧、头部压缩、服务器推送</td>
+<td align="left">传输层队头阻塞</td>
+</tr>
+<tr>
+<td align="left">HTTP&#x2F;3</td>
+<td align="left">QUIC（UDP）</td>
+<td align="left">流独立传输</td>
+<td align="left">0-RTT 握手、连接迁移、默认加密</td>
+<td align="left">生态仍在完善</td>
+</tr>
+</tbody></table>
+<h2 id="HTTP-1-0-——-奠基的一代"><a href="#HTTP-1-0-——-奠基的一代" class="headerlink" title="HTTP&#x2F;1.0 —— 奠基的一代"></a>HTTP&#x2F;1.0 —— 奠基的一代</h2><p>HTTP&#x2F;1.0 确立了今天我们熟悉的基本概念：</p>
+<ul>
+<li><strong>状态码</strong>：<code>200</code> 表示成功，<code>404</code> 表示资源不存在，<code>500</code> 表示服务端出错</li>
+<li><strong>请求方法</strong>：<code>GET</code> 取资源，<code>POST</code> 提交数据</li>
+<li><strong>头部字段</strong>：<code>Content-Type</code> 告诉对方我发的是什么格式</li>
+</ul>
+<p>它最大的问题是<strong>默认短连接</strong> —— 每请求一个资源（一个 HTML、一张图、一个 CSS），<br>都要重新建立一次 TCP 连接。三次握手 + 四次挥手，纯粹是在等待。</p>
+<h2 id="HTTP-1-1-——-用得最多的一代"><a href="#HTTP-1-1-——-用得最多的一代" class="headerlink" title="HTTP&#x2F;1.1 —— 用得最多的一代"></a>HTTP&#x2F;1.1 —— 用得最多的一代</h2><p>直到今天，大量网站依然跑在 HTTP&#x2F;1.1 上。它的关键改进：</p>
+<p><strong>1. 持久连接（默认开启）</strong><br>一次 TCP 连接可以复用给多个请求，省掉了反复握手的开销。</p>
+<p><strong>2. Host 头字段</strong><br>有了它，同一个 IP 上可以托管多个域名（虚拟主机）。在此之前，<br>服务器没法知道浏览器到底想访问哪个网站 —— 这也是 HTTP&#x2F;1.0 时代 IP 地址不够用的原因之一。</p>
+<p><strong>3. 更强的缓存控制</strong><br><code>Cache-Control</code>、<code>ETag</code>、<code>If-None-Match</code> 让浏览器可以精确判断”这个资源还能不能用本地的”，<br>不再需要每次都问服务器。</p>
+<p><strong>4. 分块传输与范围请求</strong><br><code>Transfer-Encoding: chunked</code> 支持流式传输，不用等整个资源准备好；<br><code>Range</code> 请求支持断点续传，下载大文件时特别有用。</p>
+<p><strong>遗留问题：管线化的队头阻塞</strong></p>
+<p>HTTP&#x2F;1.1 允许一次性把多个请求发出去（管线化），但<strong>响应必须按顺序返回</strong>。<br>如果第一个请求处理很慢，后面所有响应都得排队等着 —— 这就是<strong>队头阻塞（Head-of-Line Blocking）</strong>。<br>所以浏览器实际上很少真的用管线化，而是开 6 个左右的并发连接来绕过它。</p>
+<h2 id="HTTP-2-——-解决应用层的排队问题"><a href="#HTTP-2-——-解决应用层的排队问题" class="headerlink" title="HTTP&#x2F;2 —— 解决应用层的排队问题"></a>HTTP&#x2F;2 —— 解决应用层的排队问题</h2><p>HTTP&#x2F;2 的核心目标就是干掉应用层的队头阻塞：</p>
+<ul>
+<li><strong>二进制分帧</strong>：不再用文本传输，改成二进制帧，解析更高效、更不容易出错</li>
+<li><strong>多路复用</strong>：一个 TCP 连接上并行跑多个请求流，互不阻塞</li>
+<li><strong>头部压缩（HPACK）</strong>：HTTP 头部有大量重复字段（Cookie、User-Agent……），压缩后能省不少流量</li>
+<li><strong>服务器推送</strong>：服务端可以主动把客户端马上要用的资源推过去</li>
+<li><strong>流优先级</strong>：客户端可以告诉服务器哪些请求更着急</li>
+</ul>
+<p><strong>遗留问题：传输层的队头阻塞</strong></p>
+<p>HTTP&#x2F;2 把多路复用建在 TCP 之上，而 <strong>TCP 本身要求数据严格按序到达</strong>。<br>一旦某个数据包丢了，后面所有流的数据都得在内核缓冲区里等着重传 ——<br>应用层不排队了，传输层还在排队。</p>
+<h2 id="HTTP-3-——-换掉-TCP"><a href="#HTTP-3-——-换掉-TCP" class="headerlink" title="HTTP&#x2F;3 —— 换掉 TCP"></a>HTTP&#x2F;3 —— 换掉 TCP</h2><p>HTTP&#x2F;3 的答案很直接：<strong>既然 TCP 是瓶颈，那就换掉它。</strong></p>
+<p>它基于 <strong>QUIC</strong> 协议，跑在 UDP 之上：</p>
+<ul>
+<li><strong>彻底解决队头阻塞</strong>：QUIC 的流是独立传输的，丢包只影响丢包的那一条流</li>
+<li><strong>极速连接</strong>：集成了 TLS 1.3，握手和加密协商合并，支持 0-RTT &#x2F; 1-RTT</li>
+<li><strong>QPACK 头部压缩</strong>：针对 QUIC 重新设计的头部压缩方案</li>
+<li><strong>连接迁移</strong>：靠连接 ID 而不是 IP 来标识连接 —— 从 WiFi 切到 4G 时连接不会断</li>
+<li><strong>默认加密</strong>：QUIC 强制加密，安全性更好</li>
+</ul>
+<p>代价是 UDP 在某些网络环境下会被中间设备限制，所以 HTTP&#x2F;3 通常和 HTTP&#x2F;2 并存，<br>由浏览器自动选择。</p>
+<h2 id="怎么查看一个网站用的是什么版本"><a href="#怎么查看一个网站用的是什么版本" class="headerlink" title="怎么查看一个网站用的是什么版本"></a>怎么查看一个网站用的是什么版本</h2><p>在浏览器里按 <code>F12</code> 打开开发者工具，切到 <strong>Network（网络）</strong> 面板，<br>刷新页面后点击任意一个请求，在 <strong>Headers</strong> 里找 <strong>Protocol</strong> 这一行，就能看到类似<br><code>h2</code>、<code>h3</code>、<code>http/1.1</code> 的标识。</p>
+<p>用命令行也可以：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -sI --http2 https://www.example.com | <span class="built_in">head</span> -1</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>回顾整条演进路线，每一代都在回答同一个问题：<strong>如何减少等待。</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">代际</th>
+<th align="left">回答的方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">HTTP&#x2F;1.0 → 1.1</td>
+<td align="left">别每次都重新握手</td>
+</tr>
+<tr>
+<td align="left">HTTP&#x2F;1.1 → 2</td>
+<td align="left">别在应用层排成一队</td>
+</tr>
+<tr>
+<td align="left">HTTP&#x2F;2 → 3</td>
+<td align="left">别让传输层的丢包拖累所有请求</td>
+</tr>
+</tbody></table>
+<p><img src="/img/cover-3.svg" alt="协议分层示意图"></p>
+<hr>
+<p><em>本文是「计算机网络实验一：静态网页制作」的一部分，用于学习 HTTP 协议版本差异。</em></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://weshare-sun.github.io">张三</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://weshare-sun.github.io/http-versions/">https://weshare-sun.github.io/http-versions/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://weshare-sun.github.io" target="_blank">张三的主页</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/HTTP/">HTTP</a><a class="post-meta__tags" href="/tags/%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE/">网络协议</a><a class="post-meta__tags" href="/tags/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/">性能优化</a></div><div class="post-share"><div class="social-share" data-image="/img/cover-2.svg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/hello-world/" title="Hello World：这个主页是怎么搭起来的"><img class="cover" src="/img/cover-1.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Hello World：这个主页是怎么搭起来的</div></div><div class="info-2"><div class="info-item-1">这是本站的第一篇文章。与其写一句 “Hello World” 就收工，不如把搭建过程完整记下来 ——既是一次复习，也方便以后换电脑时照着重做一遍。   为什么要用静态网站传统的个人主页可能有后端、有数据库，但一个只展示内容的页面根本不需要这些。静态网站的特点是：所有页面在部署前就已经生成成 HTML 文件，服务器只负责把文件发出去。    对比项 静态网站 动态网站    服务器压力 极低，只发文件 需要执行代码、查数据库   加载速度 快（可上 CDN） 取决于后端响应   安全性 攻击面小 需要考虑注入、越权等   费用 GitHub Pages 免费 通常需要服务器   适合场景 博客、文档、个人主页 需要登录、实时交互的系统   结论很明确：只是展示内容的话，静态网站是更省事也更快的选择。 技术选型整套方案由三部分组成：  Hexo —— 基于 Node.js 的静态站点生成器，用 Markdown 写作，一条命令生成整站 Butterfly —— Hexo 的主题，界面美观、支持深色模式和代码高亮 GitHub Pages —— 免费托管，推送即上线，还自带 HTTPS...</div></div></div></a><a class="pagination-related" href="/css-layout/" title="CSS 布局笔记：从盒模型到 Flex 与 Grid"><img class="cover" src="/img/cover-3.svg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">CSS 布局笔记：从盒模型到 Flex 与 Grid</div></div><div class="info-2"><div class="info-item-1">写静态页面的第一天就会遇到一个问题：为什么元素的位置和我想的不一样？答案通常藏在盒模型和文档流里。这篇笔记把 CSS 布局的主线梳理一遍。   一、盒模型：所有布局的基础CSS 把每个元素都看成一个矩形的盒子，从内到外分四层： 123456789101112┌─────────────────────────────┐│          margin             ││  ┌───────────────────────┐  ││  │       border          │  ││  │  ┌─────────────────┐  │  ││  │  │    padding      │  │  ││  │  │  ┌───────────┐  │  │  ││  │  │  │  content  │  │  │  ││  │  │  └───────────┘  │  │  ││  │  └─────────────────┘  │  ││  └───────────────────────┘  │└──────────────────────────...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/img/avatar.svg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">张三</div><div class="author-info-description">中国科学技术大学本科生个人主页 —— 关于我、项目、学习笔记与生活分享</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">12</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/weshare-sun" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:zhangsan@mail.ustc.edu.cn" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #4a7dbe;"></i></a><a class="social-icon" href="https://www.ustc.edu.cn/" target="_blank" title="USTC"><i class="fas fa-graduation-cap" style="color: #1e6fba;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到我的个人主页～ 这里是「计算机网络实验一：静态网页制作」的成果，欢迎<a href="/about/">了解一下我</a>。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E5%BC%A0%E8%A1%A8%E7%9C%8B%E6%87%82%E5%9B%9B%E4%BB%A3%E7%89%88%E6%9C%AC"><span class="toc-number">1.</span> <span class="toc-text">一张表看懂四代版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-1-0-%E2%80%94%E2%80%94-%E5%A5%A0%E5%9F%BA%E7%9A%84%E4%B8%80%E4%BB%A3"><span class="toc-number">2.</span> <span class="toc-text">HTTP&#x2F;1.0 —— 奠基的一代</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-1-1-%E2%80%94%E2%80%94-%E7%94%A8%E5%BE%97%E6%9C%80%E5%A4%9A%E7%9A%84%E4%B8%80%E4%BB%A3"><span class="toc-number">3.</span> <span class="toc-text">HTTP&#x2F;1.1 —— 用得最多的一代</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-2-%E2%80%94%E2%80%94-%E8%A7%A3%E5%86%B3%E5%BA%94%E7%94%A8%E5%B1%82%E7%9A%84%E6%8E%92%E9%98%9F%E9%97%AE%E9%A2%98"><span class="toc-number">4.</span> <span class="toc-text">HTTP&#x2F;2 —— 解决应用层的排队问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-3-%E2%80%94%E2%80%94-%E6%8D%A2%E6%8E%89-TCP"><span class="toc-number">5.</span> <span class="toc-text">HTTP&#x2F;3 —— 换掉 TCP</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E6%9F%A5%E7%9C%8B%E4%B8%80%E4%B8%AA%E7%BD%91%E7%AB%99%E7%94%A8%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88%E7%89%88%E6%9C%AC"><span class="toc-number">6.</span> <span class="toc-text">怎么查看一个网站用的是什么版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">7.</span> <span class="toc-text">总结</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/hello-world/" title="Hello World：这个主页是怎么搭起来的"><img src="/img/cover-1.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hello World：这个主页是怎么搭起来的"/></a><div class="content"><a class="title" href="/hello-world/" title="Hello World：这个主页是怎么搭起来的">Hello World：这个主页是怎么搭起来的</a><time datetime="2026-10-05T12:30:00.000Z" title="发表于 2026-10-05 20:30:00">2026-10-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/http-versions/" title="HTTP 协议版本演进：从 1.0 到 HTTP/3"><img src="/img/cover-2.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="HTTP 协议版本演进：从 1.0 到 HTTP/3"/></a><div class="content"><a class="title" href="/http-versions/" title="HTTP 协议版本演进：从 1.0 到 HTTP/3">HTTP 协议版本演进：从 1.0 到 HTTP/3</a><time datetime="2026-10-03T07:00:00.000Z" title="发表于 2026-10-03 15:00:00">2026-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/css-layout/" title="CSS 布局笔记：从盒模型到 Flex 与 Grid"><img src="/img/cover-3.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CSS 布局笔记：从盒模型到 Flex 与 Grid"/></a><div class="content"><a class="title" href="/css-layout/" title="CSS 布局笔记：从盒模型到 Flex 与 Grid">CSS 布局笔记：从盒模型到 Flex 与 Grid</a><time datetime="2026-09-28T13:00:00.000Z" title="发表于 2026-09-28 21:00:00">2026-09-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/toolbox/" title="我的工具箱：常用开发环境与配置"><img src="/img/cover-4.svg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="我的工具箱：常用开发环境与配置"/></a><div class="content"><a class="title" href="/toolbox/" title="我的工具箱：常用开发环境与配置">我的工具箱：常用开发环境与配置</a><time datetime="2026-09-20T06:00:00.000Z" title="发表于 2026-09-20 14:00:00">2026-09-20</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2026 By 张三</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.7.0</a></span></div><div class="footer_custom_text">Powered by Hexo · Theme by Butterfly | 计算机网络实验一</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.7.0"></script><script src="/js/main.js?v=5.7.0"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
