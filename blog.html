@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="description" content="《从 HTTP 到一个真正上线的网页》—— 一篇关于 HTTP 协议、HTML/CSS 分工与静态站点部署的学习笔记。">
+  <title>从 HTTP 到一个真正上线的网页 — 个人学习主页</title>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="从 HTTP 到一个真正上线的网页">
+  <meta property="og:description" content="关于 HTTP 协议、HTML/CSS 分工与静态站点部署的学习笔记。">
+  <meta property="og:image" content="assets/images/og-cover.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- .reveal is hidden by CSS and shown by JS; without JS, show it immediately -->
+  <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+  <script src="js/main.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <!-- ===================== Header ===================== -->
+  <header id="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-mark" src="assets/images/favicon.svg" alt="" width="30" height="30">
+        <span class="brand-name">Computing &times; Chemistry</span>
+      </a>
+
+      <button class="nav-toggle" id="nav-toggle" type="button"
+              aria-label="打开导航菜单" aria-expanded="false" aria-controls="site-nav">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="主导航">
+        <ul>
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="index.html#about">About</a></li>
+          <li><a href="index.html#learning">Learning</a></li>
+          <li><a href="index.html#projects">Projects</a></li>
+          <li><a href="blog.html" aria-current="page">Blog</a></li>
+          <li><a href="index.html#links">Links</a></li>
+        </ul>
+      </nav>
+
+      <button class="theme-toggle" id="theme-toggle" type="button"
+              aria-label="切换深色 / 浅色主题" title="切换深色 / 浅色主题">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.6" fill="currentColor"/>
+          <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="12" y1="1.5" x2="12" y2="4.2"/>
+            <line x1="12" y1="19.8" x2="12" y2="22.5"/>
+            <line x1="1.5" y1="12" x2="4.2" y2="12"/>
+            <line x1="19.8" y1="12" x2="22.5" y2="12"/>
+            <line x1="4.6" y1="4.6" x2="6.5" y2="6.5"/>
+            <line x1="17.5" y1="17.5" x2="19.4" y2="19.4"/>
+            <line x1="4.6" y1="19.4" x2="6.5" y2="17.5"/>
+            <line x1="17.5" y1="6.5" x2="19.4" y2="4.6"/>
+          </g>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="post">
+      <div class="container post-container">
+
+        <nav class="breadcrumb" aria-label="面包屑导航">
+          <a href="index.html">Home</a>
+          <span aria-hidden="true">/</span>
+          <a href="index.html#blog">Blog</a>
+          <span aria-hidden="true">/</span>
+          <span aria-current="page">从 HTTP 到一个真正上线的网页</span>
+        </nav>
+
+        <header class="post-header">
+          <p class="post-meta">
+            <time datetime="2026-10-08">2026-10-08</time>
+            <span class="dot">·</span>
+            <span>Networks / Web</span>
+            <span class="dot">·</span>
+            <span>约 1500 字</span>
+          </p>
+          <h1>从 HTTP 到一个真正上线的网页</h1>
+          <p class="post-lead">
+            这次计算机网络实验，我把自己做的东西放到了公网上，也顺带把浏览器和服务器
+            之间发生了什么看了个大概。这篇文章是做完之后的一点整理，顺便把过程记下来，
+            免得以后要重做一遍。
+          </p>
+        </header>
+
+        <nav class="post-toc" aria-label="本文目录">
+          <h2>本文目录</h2>
+          <ol>
+            <li><a href="#http-basics">为什么网页访问离不开 HTTP</a></li>
+            <li><a href="#http-versions">HTTP 从 1.1 到 2 再到 3</a></li>
+            <li><a href="#html-css">HTML 和 CSS 各自负责什么</a></li>
+            <li><a href="#deploy">把网页部署到 GitHub Pages</a></li>
+            <li><a href="#takeaways">这次实验的收获</a></li>
+          </ol>
+        </nav>
+
+        <section id="http-basics" class="post-section">
+          <h2>一、为什么网页访问离不开 HTTP</h2>
+          <p>
+            在浏览器地址栏里敲下一个网址并回车，我们看到的是一张页面，但背后发生的事情要具体得多。
+            浏览器首先要通过 DNS 把域名翻译成 IP 地址，然后和服务器建立连接，接着发出一个
+            <strong>HTTP 请求</strong>。这个请求里包含请求方法（比如 <code>GET</code>）、
+            请求的路径，以及一堆头部字段，用来告诉服务器我是谁、我能接受什么格式的内容。
+          </p>
+          <p>
+            服务器收到请求后，返回一个<strong>响应</strong>：一个状态码，加上响应头和响应体。
+            状态码 <code>200</code> 表示一切正常，<code>404</code> 表示这个资源根本不存在。
+            平时我们打开网页时看到的每一个文字、每一张图片、每一个样式文件，都是一次独立的
+            HTTP 请求换回来的。
+          </p>
+          <p>
+            打开开发者工具的 Network 面板刷新一下就能看到，一个看起来很简单的页面，
+            背后也有几十条请求在跑。
+          </p>
+        </section>
+
+        <section id="http-versions" class="post-section">
+          <h2>二、HTTP 从 1.1 到 2 再到 3</h2>
+          <p>
+            HTTP 的版本演进一直在解决同一个问题：<strong>怎么少等一点</strong>。
+          </p>
+          <p>
+            <strong>HTTP/1.0</strong> 默认使用短连接，每请求一个资源就要重新建立一次 TCP 连接，
+            代价很高。<strong>HTTP/1.1</strong> 改成了默认持久连接，一次连接可以复用给多个请求，
+            还引入了 <code>Host</code> 头字段，让同一台服务器可以托管多个域名。它至今仍是被
+            使用得最多的版本。但 1.1 有个绕不过去的毛病：虽然请求可以一次发出去多个，
+            响应却必须按顺序回来，前面那个慢了，后面全都要排队，这就是所谓的队头阻塞。
+          </p>
+          <p>
+            <strong>HTTP/2</strong> 用二进制分帧和多路复用解决了应用层的排队问题，
+            一个连接上可以并行跑很多个请求，头部压缩也省下了不少重复传输的开销。
+            但它的多路复用是建在 TCP 之上的，而 TCP 要求数据严格按顺序到达 ——
+            一旦丢包，所有流都得等着重传，排队从应用层挪到了传输层。
+          </p>
+          <p>
+            <strong>HTTP/3</strong> 的做法最干脆：换掉 TCP，改用基于 UDP 的 QUIC 协议。
+            每个流独立传输，丢包只影响那一条流；同时它把加密握手集成进来，支持 0-RTT，
+            连接迁移也让网络切换时连接不再中断。
+          </p>
+          <p>
+            这个网站的线上版本部署在 GitHub Pages 上，实测用的是 <strong>HTTP/2</strong>。
+          </p>
+        </section>
+
+        <section id="html-css" class="post-section">
+          <h2>三、HTML 和 CSS 各自负责什么</h2>
+          <p>
+            这个页面里，<strong>HTML 管结构和内容</strong>：哪一段是标题、哪一块是列表、
+            哪里是导航、哪里是页脚，它回答的是「这块东西是什么」。
+            <strong>CSS 管外观</strong>：颜色、间距、字号、怎么排列，回答的是「它长什么样」。
+          </p>
+          <p>
+            这个分工听起来像句废话，代码多起来之后才显出好处。整站的样式都放在
+            <code>css/style.css</code> 一个文件里，主色、圆角、阴影定义成 CSS 变量。
+            深色模式就是把变量重新赋一遍值，没有另外写一套样式表。
+            如果样式是散在标签属性里写的，改这一处会非常难受。
+          </p>
+          <p>
+            布局主要用了 <strong>Flexbox</strong> 和 <strong>Grid</strong>。导航栏和按钮
+            用 Flex 排，卡片区域用 Grid 配合 <code>auto-fit</code> 和
+            <code>minmax()</code>，屏幕窄了会自己换行，不用给每种宽度单独写一套规则。
+          </p>
+        </section>
+
+        <section id="deploy" class="post-section">
+          <h2>四、把网页部署到 GitHub Pages</h2>
+          <p>
+            网页写完还只是躺在自己电脑上的几个文件，只有放到公网服务器上，别人才访问得到。
+            GitHub Pages 提供了一种很轻的静态托管方式：把文件推到仓库里，它就帮你当成网站发布。
+          </p>
+          <p>整个过程大致是这几步：</p>
+          <pre><code>git init
+git add .
+git commit -m "init website structure"
+git remote add origin https://github.com/&lt;用户名&gt;/&lt;用户名&gt;.github.io.git
+git push -u origin main</code></pre>
+          <p>
+            推到仓库之后，在仓库设置里把 Pages 的发布分支指向 <code>main</code>，
+            等上一两分钟，访问 <code>https://&lt;用户名&gt;.github.io</code> 就能看到自己的页面了。
+            之后再改内容，只要重新提交并推送一次，线上就会更新。
+          </p>
+          <p>
+            静态网站没有后端。服务器只是把已经生成好的 HTML、CSS、图片原样发回来，
+            不执行任何代码。好处是快、不容易被攻击；代价是做不了登录、评论这类
+            需要服务端参与的功能。个人主页用不上这些，这个取舍是划算的。
+          </p>
+        </section>
+
+        <section id="takeaways" class="post-section">
+          <h2>五、这次实验的收获</h2>
+          <p>
+            这个网站的代码不是我逐行手写的。结构怎么分、每个区域放什么、配色和交互做成什么样，
+            这些是我定的；具体的 HTML / CSS / JavaScript 有相当一部分借助 AI 工具生成，
+            我再逐段读、逐处改。
+          </p>
+          <p>
+            这么做的收获和纯手写不太一样。手写的时候卡住的多半是语法和布局；这次主要花在
+            「看懂」上：为什么这里用 Grid 而不是 Flex、表格在手机上为什么要改成堆叠布局、
+            深色模式为什么只改几个变量就够了。看不懂的地方就回去翻文档。
+          </p>
+          <p>
+            HTTP 那部分是实打实自己动手查的。强制请求 HTTP/2 拿到 h2、再退回 1.1 对比结果，
+            才把「协议协商」这件事弄明白。之前它对我来说只是要背的状态码和字段名。
+          </p>
+          <p>
+            另外，写网页比看上去琐碎。同一个布局在不同宽度下表现可能完全不一样，
+            一个很小的间距问题，背后往往是盒模型或者对齐方式没弄对。
+            这个页面还有不完善的地方，但它确实在互联网上跑着。
+          </p>
+        </section>
+
+        <footer class="post-footer">
+          <a class="link-more" href="index.html#blog">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path d="M19 12H6M11 18l-6-6 6-6" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            返回博客列表
+          </a>
+        </footer>
+
+      </div>
+    </article>
+
+    <!-- ===================== More posts ===================== -->
+    <section class="section section-alt">
+      <div class="container">
+        <header class="section-head">
+          <p class="section-kicker">More</p>
+          <h2 class="section-title">准备中的文章</h2>
+        </header>
+
+        <div class="post-grid">
+          <article class="post-card">
+            <span class="badge-soon">Coming Soon</span>
+            <h3>我的机器学习学习路线</h3>
+            <p>打算整理一份从线性回归到神经网络的学习顺序，以及每个阶段值得动手实现的东西。</p>
+          </article>
+
+          <article class="post-card">
+            <span class="badge-soon">Coming Soon</span>
+            <h3>AI for Science 初步探索</h3>
+            <p>分子性质预测到底是怎么做的？想把读到的入门材料整理成一篇能看懂的中文笔记。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-built">Built with HTML, CSS &amp; JavaScript</p>
+      <p class="footer-meta">
+        <span>Last updated: <time datetime="2026-10-08">2026-10-08</time></span>
+      </p>
+      <p class="footer-note">计算机网络实验一 · 静态网页制作</p>
+      <p class="footer-note">结构与内容由作者设计，代码借助 AI 工具完成</p>
+    </div>
+  </footer>
+
+  <button id="back-to-top" type="button" aria-label="回到页面顶部" title="回到顶部">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</body>
+</html>
