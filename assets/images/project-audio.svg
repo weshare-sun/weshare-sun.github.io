@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="480" height="300" role="img" aria-labelledby="pa-title">
+  <title id="pa-title">A vocal waveform being turned into a piano-roll of MIDI notes</title>
+  <defs>
+    <linearGradient id="pa-wave" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#60a5fa"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="480" height="300" fill="#f1f5fb"/>
+
+  <!-- waveform -->
+  <g fill="url(#pa-wave)">
+    <rect x="34"  y="168" width="7" height="24"  rx="3.5"/>
+    <rect x="47"  y="146" width="7" height="68"  rx="3.5"/>
+    <rect x="60"  y="118" width="7" height="124" rx="3.5"/>
+    <rect x="73"  y="158" width="7" height="44"  rx="3.5"/>
+    <rect x="86"  y="96"  width="7" height="168" rx="3.5"/>
+    <rect x="99"  y="132" width="7" height="96"  rx="3.5"/>
+    <rect x="112" y="88"  width="7" height="184" rx="3.5"/>
+    <rect x="125" y="150" width="7" height="60"  rx="3.5"/>
+    <rect x="138" y="112" width="7" height="136" rx="3.5"/>
+    <rect x="151" y="162" width="7" height="36"  rx="3.5"/>
+    <rect x="164" y="128" width="7" height="104" rx="3.5"/>
+    <rect x="177" y="104" width="7" height="152" rx="3.5"/>
+    <rect x="190" y="156" width="7" height="48"  rx="3.5"/>
+  </g>
+  <line x1="34" y1="180" x2="197" y2="180" stroke="#c8d3e4" stroke-width="2"/>
+
+  <!-- arrow -->
+  <g stroke="#94a3b8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <line x1="212" y1="180" x2="252" y2="180"/>
+    <path d="M244 172 l8 8 -8 8"/>
+  </g>
+
+  <!-- piano roll -->
+  <rect x="272" y="70" width="176" height="220" rx="10" fill="#ffffff" stroke="#dbe3f0" stroke-width="2"/>
+  <g stroke="#eef2f9" stroke-width="1.5">
+    <line x1="272" y1="114" x2="448" y2="114"/>
+    <line x1="272" y1="158" x2="448" y2="158"/>
+    <line x1="272" y1="202" x2="448" y2="202"/>
+    <line x1="272" y1="246" x2="448" y2="246"/>
+  </g>
+  <!-- notes -->
+  <g fill="#0d9488">
+    <rect x="288" y="128" width="52" height="14" rx="7"/>
+    <rect x="348" y="106" width="38" height="14" rx="7"/>
+    <rect x="300" y="172" width="66" height="14" rx="7"/>
+    <rect x="376" y="150" width="46" height="14" rx="7"/>
+    <rect x="288" y="216" width="44" height="14" rx="7"/>
+    <rect x="342" y="194" width="58" height="14" rx="7"/>
+    <rect x="404" y="238" width="30" height="14" rx="7"/>
+  </g>
+  <rect x="288" y="82" width="34" height="14" rx="7" fill="#f59e0b" fill-opacity="0.8"/>
+
+  <text x="360" y="34" text-anchor="middle"
+        font-family="ui-monospace, Consolas, monospace" font-size="15" fill="#64748b">MIDI</text>
+</svg>

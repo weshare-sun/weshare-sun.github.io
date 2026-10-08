@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240" role="img" aria-labelledby="av-title">
+  <title id="av-title">Neutral placeholder avatar</title>
+  <defs>
+    <linearGradient id="av-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#0d9488"/>
+    </linearGradient>
+  </defs>
+
+  <circle cx="120" cy="120" r="120" fill="url(#av-bg)"/>
+  <circle cx="120" cy="120" r="108" fill="none" stroke="#ffffff" stroke-opacity="0.28" stroke-width="2"/>
+
+  <!-- neutral user glyph -->
+  <g fill="#ffffff" fill-opacity="0.95">
+    <circle cx="120" cy="98" r="36"/>
+    <path d="M120 146 c-40 0 -68 24 -68 52 v6 h136 v-6 c0 -28 -28 -52 -68 -52 z"/>
+  </g>
+
+  <text x="120" y="228" text-anchor="middle"
+        font-family="ui-monospace, Consolas, monospace" font-size="17"
+        fill="#ffffff" fill-opacity="0.85">avatar</text>
+</svg>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="description" content="计算机 × 化学 × AI for Science 的个人学习主页：记录机器学习、计算机网络与物理化学的学习过程。">
+
+  <title>在计算机与化学的交叉处 — 个人学习主页</title>
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="在计算机与化学的交叉处">
+  <meta property="og:description" content="计算机 × 化学 × AI for Science 的个人学习主页。">
+  <meta property="og:image" content="assets/images/og-cover.png">
+  <meta property="og:locale" content="zh_CN">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- .reveal is hidden by CSS and shown by JS; without JS, show it immediately -->
+  <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+  <script src="js/main.js" defer></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <!-- ===================== Header ===================== -->
+  <header id="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#home">
+        <img class="brand-mark" src="assets/images/favicon.svg" alt="" width="30" height="30">
+        <span class="brand-name">Computing &times; Chemistry</span>
+      </a>
+
+      <button class="nav-toggle" id="nav-toggle" type="button"
+              aria-label="打开导航菜单" aria-expanded="false" aria-controls="site-nav">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="主导航">
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#learning">Learning</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#blog">Blog</a></li>
+          <li><a href="#links">Links</a></li>
+        </ul>
+      </nav>
+
+      <button class="theme-toggle" id="theme-toggle" type="button"
+              aria-label="切换深色 / 浅色主题" title="切换深色 / 浅色主题">
+        <svg class="icon-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.6" fill="currentColor"/>
+          <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="12" y1="1.5" x2="12" y2="4.2"/>
+            <line x1="12" y1="19.8" x2="12" y2="22.5"/>
+            <line x1="1.5" y1="12" x2="4.2" y2="12"/>
+            <line x1="19.8" y1="12" x2="22.5" y2="12"/>
+            <line x1="4.6" y1="4.6" x2="6.5" y2="6.5"/>
+            <line x1="17.5" y1="17.5" x2="19.4" y2="19.4"/>
+            <line x1="4.6" y1="19.4" x2="6.5" y2="17.5"/>
+            <line x1="17.5" y1="6.5" x2="19.4" y2="4.6"/>
+          </g>
+        </svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ===================== Hero ===================== -->
+    <section class="hero" id="home">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <p class="eyebrow">个人主页</p>
+          <h1>在计算机与化学的交叉处</h1>
+          <p class="hero-sub">Computer Science &middot; Chemistry &middot; AI for Science</p>
+          <p class="hero-lead">
+            我是一名本科生，计算机和化学两边都在学。这里放的是我正在看的东西、
+            做过的课程实验，还有一些还没想明白、先记下来的笔记。
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#learning">Explore My Learning</a>
+            <a class="btn btn-ghost" href="blog.html">Read My Blog</a>
+          </div>
+          <ul class="hero-facts">
+            <li><span class="fact-dot"></span>本科在读</li>
+            <li><span class="fact-dot"></span>计算机 &amp; 化学双线学习</li>
+            <li><span class="fact-dot"></span>关注 AI for Science</li>
+          </ul>
+        </div>
+
+        <figure class="hero-visual">
+          <img src="assets/images/hero-visual.svg" alt="分子环与网络图相连的示意图，代表化学与计算的交叉" width="800" height="560">
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== About ===================== -->
+    <section class="section" id="about">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-kicker">01 — About</p>
+          <h2 class="section-title">About Me</h2>
+        </header>
+
+        <div class="about-grid">
+          <figure class="about-avatar reveal">
+            <img src="assets/images/avatar.svg" alt="头像占位图" width="240" height="240" loading="lazy">
+            <figcaption>
+              <strong>wesharesun</strong>
+              <span>本科生 · 计算机科学 / 化学</span>
+            </figcaption>
+          </figure>
+
+          <div class="about-body reveal">
+            <p>
+              我是一名本科生，计算机和化学两边都在学。计算机这边主要在补基础，
+              数据结构、计算机网络、操作系统这些课的内容，课后会写点代码把课本上的东西跑一遍。
+            </p>
+            <p>
+              化学这边在学物理化学，热力学和量子化学对我来说都还挺吃力。这两个方向看起来离得远，
+              但交叉的地方是我最感兴趣的：用计算的方法去理解分子和材料的行为，
+              也就是现在常说的 <strong>AI for Science</strong>。
+            </p>
+            <p>
+              我做出来的东西还很少。这个网站是计算机网络课的实验：结构和内容是我定的，
+              具体的 HTML / CSS / JavaScript 大部分借助 AI 工具完成，我逐段读过、改过，
+              尽量弄清每一处在做什么。
+            </p>
+
+            <h3>Currently interested in</h3>
+            <ul class="tick-list">
+              <li>机器学习的基础模型与训练过程</li>
+              <li>计算机网络与 Web 应用的工作方式</li>
+              <li>物理化学中的热力学与量子化学基础</li>
+              <li>机器学习方法在化学与材料问题上的应用</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Learning ===================== -->
+    <section class="section section-alt" id="learning">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-kicker">02 — Learning</p>
+          <h2 class="section-title">Current Focus</h2>
+        </header>
+
+        <div class="card-grid">
+          <article class="focus-card reveal">
+            <span class="focus-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/>
+                <ellipse cx="12" cy="12" rx="9" ry="4" fill="none" stroke="currentColor" stroke-width="2"/>
+                <line x1="3" y1="12" x2="21" y2="12" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </span>
+            <h3>Computer Networks</h3>
+            <ul class="tag-list">
+              <li class="tag">HTTP</li>
+              <li class="tag">TCP/IP</li>
+              <li class="tag">Web Applications</li>
+            </ul>
+            <p>从 HTTP 请求结构入手，理解一个网页是如何被浏览器取回并渲染出来的。</p>
+          </article>
+
+          <article class="focus-card reveal">
+            <span class="focus-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <circle cx="5" cy="7" r="2.4" fill="currentColor"/>
+                <circle cx="5" cy="17" r="2.4" fill="currentColor"/>
+                <circle cx="12" cy="12" r="2.4" fill="currentColor"/>
+                <circle cx="19" cy="7" r="2.4" fill="currentColor"/>
+                <circle cx="19" cy="17" r="2.4" fill="currentColor"/>
+                <g stroke="currentColor" stroke-width="1.6" stroke-opacity="0.65">
+                  <line x1="5" y1="7" x2="12" y2="12"/><line x1="5" y1="17" x2="12" y2="12"/>
+                  <line x1="12" y1="12" x2="19" y2="7"/><line x1="12" y1="12" x2="19" y2="17"/>
+                </g>
+              </svg>
+            </span>
+            <h3>Machine Learning</h3>
+            <ul class="tag-list">
+              <li class="tag">Regression</li>
+              <li class="tag">Neural Networks</li>
+              <li class="tag">Model Generalization</li>
+            </ul>
+            <p>从线性回归这类最基础的模型开始自己实现一遍，再往神经网络和泛化问题走。</p>
+          </article>
+
+          <article class="focus-card reveal">
+            <span class="focus-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <polygon points="12,3 19,7.5 19,16.5 12,21 5,16.5 5,7.5"
+                         fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="3.4" fill="currentColor"/>
+              </svg>
+            </span>
+            <h3>Physical Chemistry</h3>
+            <ul class="tag-list">
+              <li class="tag">Thermodynamics</li>
+              <li class="tag">Quantum Chemistry</li>
+            </ul>
+            <p>理解能量、熵与平衡这些基本概念，以及它们背后的数学表述。</p>
+          </article>
+
+          <article class="focus-card reveal">
+            <span class="focus-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22">
+                <path d="M9 3h6v5.2l4.4 8.3A2 2 0 0 1 17.6 20H6.4a2 2 0 0 1-1.8-3.5L9 8.2z"
+                      fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <line x1="7.6" y1="14.5" x2="16.4" y2="14.5" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </span>
+            <h3>AI for Science</h3>
+            <ul class="tag-list">
+              <li class="tag">Scientific ML</li>
+              <li class="tag">AI for Chemistry</li>
+            </ul>
+            <p>关注机器学习方法如何被用在分子性质预测、材料筛选这类真实的科学问题上。</p>
+          </article>
+        </div>
+
+        <!-- 小型表格：实验要求 HTML 能力展示 -->
+        <div class="table-wrap reveal">
+          <table class="data-table">
+            <caption>Current Learning Overview</caption>
+            <thead>
+              <tr>
+                <th scope="col">Course</th>
+                <th scope="col">Topic</th>
+                <th scope="col">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Computer Networks</th>
+                <td data-label="Topic">HTTP / Web Applications</td>
+                <td data-label="Status"><span class="status status-active">Learning</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Machine Learning</th>
+                <td data-label="Topic">Regression &amp; Neural Networks</td>
+                <td data-label="Status"><span class="status status-active">Learning</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Physical Chemistry</th>
+                <td data-label="Topic">Thermodynamics</td>
+                <td data-label="Status"><span class="status status-active">Learning</span></td>
+              </tr>
+              <tr>
+                <th scope="row">AI for Science</th>
+                <td data-label="Topic">Scientific Machine Learning</td>
+                <td data-label="Status"><span class="status status-soon">Exploring</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Projects ===================== -->
+    <section class="section" id="projects">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-kicker">03 — Projects</p>
+          <h2 class="section-title">Projects &amp; Coursework</h2>
+        </header>
+
+        <div class="project-grid">
+          <article class="project-card reveal">
+            <img class="project-img" src="assets/images/project-web.svg"
+                 alt="浏览器窗口与网页布局线框图" width="480" height="300" loading="lazy">
+            <div class="project-body">
+              <h3>weshare-sun.github.io</h3>
+              <p>本次计算机网络实验的站点。原生 HTML / CSS / JavaScript，没有框架也没有构建步骤，
+                 改完直接 push，由 GitHub Pages 发布。</p>
+              <ul class="tag-list">
+                <li class="tag">HTML</li>
+                <li class="tag">CSS</li>
+                <li class="tag">JavaScript</li>
+                <li class="tag">GitHub Pages</li>
+              </ul>
+              <a class="link-more" href="https://github.com/weshare-sun/weshare-sun.github.io"
+                 target="_blank" rel="noopener noreferrer">
+                GitHub
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <img class="project-img" src="assets/images/project-audio.svg"
+                 alt="人声波形被转换成 MIDI 钢琴卷帘" width="480" height="300" loading="lazy">
+            <div class="project-body">
+              <h3>VocalPitch</h3>
+              <p>从干净的人声录音里提取音高、时长和 BPM，导出带歌词的 MIDI，支持导入 Synthesizer V。
+                 有网页界面和命令行两种用法。</p>
+              <ul class="tag-list">
+                <li class="tag">Python</li>
+                <li class="tag">CREPE</li>
+                <li class="tag">MIDI</li>
+              </ul>
+              <a class="link-more" href="https://github.com/weshare-sun/VocalPitch"
+                 target="_blank" rel="noopener noreferrer">
+                GitHub
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <img class="project-img" src="assets/images/project-ml.svg"
+                 alt="三层神经网络结构示意图" width="480" height="300" loading="lazy">
+            <div class="project-body">
+              <h3>26-spring-nlp</h3>
+              <p>自然语言处理课的作业：从零复现 Word2Vec。纯 NumPy、PyTorch、Gensim 三个版本各写一遍，
+                 再拿中文维基和 text8 语料做对比评估。</p>
+              <ul class="tag-list">
+                <li class="tag">Python</li>
+                <li class="tag">PyTorch</li>
+                <li class="tag">NumPy</li>
+                <li class="tag">Word2Vec</li>
+              </ul>
+              <a class="link-more" href="https://github.com/weshare-sun/26-spring-nlp"
+                 target="_blank" rel="noopener noreferrer">
+                GitHub
+                <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                  <path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Blog ===================== -->
+    <section class="section section-alt" id="blog">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-kicker">04 — Blog</p>
+          <h2 class="section-title">Notes &amp; Blog</h2>
+        </header>
+
+        <article class="post-featured reveal">
+          <div class="post-featured-body">
+            <p class="post-meta">
+              <time datetime="2026-10-08">2026-10-08</time>
+              <span class="dot">·</span>
+              <span>约 1500 字</span>
+              <span class="dot">·</span>
+              <span class="tag">Networks</span>
+            </p>
+            <h3><a href="blog.html">从 HTTP 到一个真正上线的网页</a></h3>
+            <p class="post-excerpt">
+              一次计算机网络实验串起来的几件事：浏览器和服务器之间发生了什么、
+              HTML 和 CSS 各自管什么、以及怎么把一个静态页面挂到公网上。
+            </p>
+            <a class="btn btn-primary" href="blog.html">阅读全文</a>
+          </div>
+        </article>
+
+        <div class="post-grid">
+          <article class="post-card reveal">
+            <span class="badge-soon">Coming Soon</span>
+            <h3>我的机器学习学习路线</h3>
+            <p>打算整理一份从线性回归到神经网络的学习顺序，以及每个阶段值得动手实现的东西。</p>
+          </article>
+
+          <article class="post-card reveal">
+            <span class="badge-soon">Coming Soon</span>
+            <h3>AI for Science 初步探索</h3>
+            <p>分子性质预测到底是怎么做的？想把读到的入门材料整理成一篇能看懂的中文笔记。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Links ===================== -->
+    <section class="section" id="links">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="section-kicker">05 — Links</p>
+          <h2 class="section-title">Useful Links</h2>
+        </header>
+
+        <div class="link-grid">
+          <a class="link-card reveal" href="https://www.ustc.edu.cn/" target="_blank" rel="noopener noreferrer">
+            <span class="link-card-name">中国科学技术大学</span>
+            <span class="link-card-desc">学校主页</span>
+            <span class="link-card-host">ustc.edu.cn</span>
+          </a>
+
+          <a class="link-card reveal" href="https://github.com/" target="_blank" rel="noopener noreferrer">
+            <span class="link-card-name">GitHub</span>
+            <span class="link-card-desc">代码托管与版本管理</span>
+            <span class="link-card-host">github.com</span>
+          </a>
+
+          <a class="link-card reveal" href="https://www.runoob.com/" target="_blank" rel="noopener noreferrer">
+            <span class="link-card-name">菜鸟教程</span>
+            <span class="link-card-desc">查 HTML / CSS 语法用得最多</span>
+            <span class="link-card-host">runoob.com</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== Footer ===================== -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-built">Built with HTML, CSS &amp; JavaScript</p>
+      <p class="footer-meta">
+        <span>Last updated: <time datetime="2026-10-08">2026-10-08</time></span>
+      </p>
+      <p class="footer-note">计算机网络实验一 · 静态网页制作</p>
+      <p class="footer-note">结构与内容由作者设计，代码借助 AI 工具完成</p>
+    </div>
+  </footer>
+
+  <button id="back-to-top" type="button" aria-label="回到页面顶部" title="回到顶部">
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <path d="M12 19V5M6 11l6-6 6 6" fill="none" stroke="currentColor"
+            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+</body>
+</html>

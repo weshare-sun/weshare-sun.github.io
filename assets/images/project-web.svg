@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="480" height="300" role="img" aria-labelledby="pw-title">
+  <title id="pw-title">A browser window with HTML markup and a layout wireframe</title>
+  <defs>
+    <linearGradient id="pw-bar" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#0d9488"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="480" height="300" fill="#f1f5fb"/>
+  <rect x="30" y="26" width="420" height="248" rx="12" fill="#ffffff" stroke="#dbe3f0" stroke-width="2"/>
+
+  <!-- browser chrome -->
+  <path d="M30 38 a12 12 0 0 1 12-12 h396 a12 12 0 0 1 12 12 v20 H30 z" fill="url(#pw-bar)"/>
+  <g fill="#ffffff" fill-opacity="0.85">
+    <circle cx="50" cy="42" r="4.5"/>
+    <circle cx="66" cy="42" r="4.5"/>
+    <circle cx="82" cy="42" r="4.5"/>
+  </g>
+  <rect x="104" y="36" width="200" height="12" rx="6" fill="#ffffff" fill-opacity="0.35"/>
+
+  <!-- page wireframe -->
+  <rect x="52" y="80" width="376" height="34" rx="6" fill="#e8eefb"/>
+  <rect x="66" y="92" width="120" height="10" rx="5" fill="#2563eb" fill-opacity="0.45"/>
+
+  <rect x="52" y="128" width="180" height="92" rx="8" fill="#eef4fb" stroke="#dbe3f0" stroke-width="1.5"/>
+  <g fill="#0d9488" fill-opacity="0.55">
+    <rect x="68" y="146" width="148" height="9" rx="4.5"/>
+    <rect x="68" y="163" width="120" height="9" rx="4.5"/>
+    <rect x="68" y="180" width="136" height="9" rx="4.5"/>
+    <rect x="68" y="197" width="90" height="9" rx="4.5"/>
+  </g>
+
+  <rect x="248" y="128" width="180" height="42" rx="8" fill="#eef4fb" stroke="#dbe3f0" stroke-width="1.5"/>
+  <rect x="248" y="178" width="180" height="42" rx="8" fill="#eef4fb" stroke="#dbe3f0" stroke-width="1.5"/>
+  <g fill="#2563eb" fill-opacity="0.35">
+    <rect x="262" y="144" width="96" height="9" rx="4.5"/>
+    <rect x="262" y="194" width="76" height="9" rx="4.5"/>
+  </g>
+
+  <rect x="52" y="234" width="376" height="26" rx="6" fill="#f7fafe" stroke="#dbe3f0" stroke-width="1.5"/>
+  <rect x="68" y="243" width="70" height="8" rx="4" fill="#94a3b8" fill-opacity="0.6"/>
+
+  <!-- corner tag -->
+  <g transform="translate(392 232)">
+    <rect x="0" y="0" width="56" height="56" rx="14" fill="#0f172a"/>
+    <text x="28" y="30" text-anchor="middle" font-family="ui-monospace, Consolas, monospace"
+          font-size="20" font-weight="700" fill="#ffffff">&lt;/&gt;</text>
+  </g>
+</svg>

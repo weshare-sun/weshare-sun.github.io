@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 300" width="480" height="300" role="img" aria-labelledby="pm-title">
+  <title id="pm-title">A small feed-forward neural network: three input nodes, four hidden nodes, two output nodes</title>
+  <defs>
+    <linearGradient id="pm-edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#0d9488"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="480" height="300" fill="#f1f5fb"/>
+
+  <!-- connections: layer1 -> layer2 -->
+  <g stroke="url(#pm-edge)" stroke-width="1.6" stroke-opacity="0.4">
+    <!-- 3 x 4 = 12 edges -->
+    <line x1="120" y1="98"  x2="230" y2="70"/><line x1="120" y1="98"  x2="230" y2="126"/>
+    <line x1="120" y1="98"  x2="230" y2="182"/><line x1="120" y1="98"  x2="230" y2="238"/>
+    <line x1="120" y1="150" x2="230" y2="70"/><line x1="120" y1="150" x2="230" y2="126"/>
+    <line x1="120" y1="150" x2="230" y2="182"/><line x1="120" y1="150" x2="230" y2="238"/>
+    <line x1="120" y1="202" x2="230" y2="70"/><line x1="120" y1="202" x2="230" y2="126"/>
+    <line x1="120" y1="202" x2="230" y2="182"/><line x1="120" y1="202" x2="230" y2="238"/>
+  </g>
+
+  <!-- connections: layer2 -> layer3 -->
+  <g stroke="url(#pm-edge)" stroke-width="1.6" stroke-opacity="0.55">
+    <line x1="230" y1="70"  x2="348" y2="122"/><line x1="230" y1="70"  x2="348" y2="178"/>
+    <line x1="230" y1="126" x2="348" y2="122"/><line x1="230" y1="126" x2="348" y2="178"/>
+    <line x1="230" y1="182" x2="348" y2="122"/><line x1="230" y1="182" x2="348" y2="178"/>
+    <line x1="230" y1="238" x2="348" y2="122"/><line x1="230" y1="238" x2="348" y2="178"/>
+  </g>
+
+  <!-- input layer -->
+  <g fill="#ffffff" stroke="#2563eb" stroke-width="3">
+    <circle cx="120" cy="98"  r="19"/>
+    <circle cx="120" cy="150" r="19"/>
+    <circle cx="120" cy="202" r="19"/>
+  </g>
+  <!-- hidden layer -->
+  <g fill="#2563eb" fill-opacity="0.9">
+    <circle cx="230" cy="70"  r="16"/>
+    <circle cx="230" cy="126" r="16"/>
+    <circle cx="230" cy="182" r="16"/>
+    <circle cx="230" cy="238" r="16"/>
+  </g>
+  <!-- output layer -->
+  <g fill="#0d9488">
+    <circle cx="348" cy="122" r="19"/>
+    <circle cx="348" cy="178" r="19"/>
+  </g>
+
+  <!-- labels -->
+  <g font-family="ui-monospace, Consolas, monospace" font-size="13" fill="#64748b">
+    <text x="120" y="278" text-anchor="middle">input</text>
+    <text x="230" y="278" text-anchor="middle">hidden</text>
+    <text x="348" y="278" text-anchor="middle">output</text>
+  </g>
+
+  <!-- prediction tick -->
+  <g transform="translate(404 118)">
+    <circle cx="0" cy="0" r="24" fill="#f59e0b" fill-opacity="0.14"/>
+    <path d="M -9 1 L -3 8 L 10 -6" fill="none" stroke="#d97706" stroke-width="3.5"
+          stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
